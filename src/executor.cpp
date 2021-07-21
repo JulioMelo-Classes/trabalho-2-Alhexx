@@ -142,8 +142,7 @@ void Executor::iniciar(istream &inputStream, ostream &outputStream)
 {
 	string linha, saida;
 	this->sair = false;
-	while (!this->sair)
-	{
+	while (!this->sair) {
 		if (getline(inputStream, linha)) {
 			saida = processar_linha(linha);
 			outputStream << saida << endl;

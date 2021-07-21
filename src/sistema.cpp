@@ -8,6 +8,22 @@
 
 using namespace std;
 
+template <typename StreamableT>
+string concat(StreamableT s)
+{
+	stringstream ss;
+	ss << s;
+	return ss.str();
+}
+
+template <typename StreamableHead, typename... StreamableTail>
+string concat(StreamableHead h, StreamableTail... t)
+{
+	stringstream ss;
+	ss << h;
+	return ss.str() + concat(t...);
+}
+
 /* COMANDOS */
 string Sistema::quit()
 {
@@ -17,11 +33,11 @@ string Sistema::quit()
 string Sistema::create_user(const string email, const string senha, const string nome)
 {
 	if (email == "")
-        return ">>>Voce esqueceu de botar um email, tente novamente...";
+        	return ">>>Voce esqueceu de botar um email, tente novamente...";
 	if (senha == "")
-        return ">>>Voce esqueceu de botar uma senha, tente novamente...";
+        	return ">>>Voce esqueceu de botar uma senha, tente novamente...";
 	if (nome == "")
-        return ">>>Voce esqueceu de botar um nome, tente novamente...";
+        	return ">>>Voce esqueceu de botar um nome, tente novamente...";
 
 	for (auto& u : this->usuarios) {
 		if (email == u.get_email())
@@ -34,16 +50,16 @@ string Sistema::create_user(const string email, const string senha, const string
 	Usuario usuario(id, nome, email, senha);
 	this->usuarios.push_back(usuario);
 
-    stringstream ss;
-    ss << id;
-    string id_str;
-    ss >> id_str;
-	return ">>>Usuario criado com sucesso, filhão. Seu id é: " + id_str;
+	//return ">>>Usuario criado com sucesso, filhão. Seu id é: " + to_string(id);
+	return concat(">>>Usuario criado com sucesso, filhão. Seu id é: ", id);
 }
 
 string Sistema::login(const string email, const string senha)
 {
 	for (auto& u : this->usuarios) {
+		if (email == u.get_email() && !u.igual_senha(senha))
+			return ">>>Senha incorreta, consagrado...";
+
 		if (email == u.get_email() && u.igual_senha(senha)) {
 			if (this->usuarios_logados.count(u.get_id()))
 				return ">>>Usuário já está logado...";
@@ -52,7 +68,7 @@ string Sistema::login(const string email, const string senha)
 			return ">>>Conectado com sucesso!";
 		}
 	}
-	return ">>>Usuario nao existente ou tu errou alguma credencial aí, consagrado...";
+	return ">>>Email nao cadastrado, consagrado...";
 }
 
 string Sistema::disconnect(int id)
@@ -67,7 +83,7 @@ string Sistema::disconnect(int id)
 string Sistema::create_server(int id, const string nome)
 {
 	if (!this->usuarios_logados.count(id))
-	    return ">>>Usuario não está logado...";
+		return ">>>Usuario não está logado...";
 
 	for (auto& s : this->servidores) {
 		if (nome == s.get_nome())
@@ -82,12 +98,12 @@ string Sistema::create_server(int id, const string nome)
 string Sistema::set_server_desc(int id, const string nome, const string descricao)
 {
 	if (!this->usuarios_logados.count(id))
-	    return ">>>Usuario não está logado...";
+		return ">>>Usuario não está logado...";
 
 	for (auto& s : this->servidores) {
 		if (nome == s.get_nome()) {
 			if (id != s.get_usuario_dono_id())
-			    return ">>>Id não é o dono do servidor...";
+				return ">>>Id não é o dono do servidor...";
 
 			s.set_descricao(descricao);
 			return ">>>Descrição do servidor criada!";
@@ -99,12 +115,12 @@ string Sistema::set_server_desc(int id, const string nome, const string descrica
 string Sistema::set_server_invite_code(int id, const string nome, const string codigo)
 {
 	if (!this->usuarios_logados.count(id))
-	    return ">>>Usuario não está logado...";
+		return ">>>Usuario não está logado...";
 
 	for (auto& s : this->servidores) {
 		if (nome == s.get_nome()) {
 			if (id != s.get_usuario_dono_id())
-			    return ">>>Id não é o dono do servidor...";
+				return ">>>Id não é o dono do servidor...";
 
 			s.set_codigo_convite(codigo);
 			return ">>>Descrição do servidor criada!";
@@ -117,18 +133,17 @@ string Sistema::list_servers(int id)
 {
 	vector<string> servidores_nome;
 	if (!this->usuarios_logados.count(id))
-	    return ">>>Usuario não está logado...";
+		return ">>>Usuario não está logado...";
 
 	for (auto& s : this->servidores)
 			servidores_nome.push_back(s.get_nome());
 
-	if(servidores_nome.size()==0)
+	if (servidores_nome.size() == 0)
 		return ">>>Nenhum servidor foi criado ainda...";
 
 	int size = servidores_nome.size()-1;
-	for(int i = 0; i<size; i++)
-	{
-		cout<<"- "<<servidores_nome[i]<< endl;
+	for (int i = 0; i<size; i++) {
+		cout << "- " << servidores_nome[i] << endl;
 	}
 	return "- " + servidores_nome[size];
 }
@@ -160,15 +175,15 @@ string Sistema::remove_server(int id, const string nome)
 string Sistema::enter_server(int id, const string nome, const string codigo)
 {
 	if (!this->usuarios_logados.count(id))
-	    return ">>>Usuario não está logado...";
+		return ">>>Usuario não está logado...";
 
 	for (auto& s : this->servidores) {
 		if (nome == s.get_nome()) {
 			if (this->usuarios_logados[id].first == nome)
-			    return ">>>Usuário já está no servidor...";
+				return ">>>Usuário já está no servidor...";
 
 			if (codigo != s.get_codigo_convite())
-			    return ">>>Código inválido...";
+				return ">>>Código inválido...";
 
 			this->usuarios_logados[id].first = nome;
 			return ">>>Usuário entrou no servidor com sucesso!";
@@ -180,12 +195,12 @@ string Sistema::enter_server(int id, const string nome, const string codigo)
 string Sistema::leave_server(int id, const string nome)
 {
 	if (!this->usuarios_logados.count(id))
-	    return ">>>Usuario não está logado...";
+		return ">>>Usuario não está logado...";
 
 	for (auto& s : this->servidores) {
 		if (nome == s.get_nome()) {
 			if (this->usuarios_logados[id].first != nome)
-			    return ">>>Usuário não está no servidor...";
+				return ">>>Usuário não está no servidor...";
 
 			this->usuarios_logados[id].first = "";
 			return ">>>Usuário saiu do servidor com sucesso!";

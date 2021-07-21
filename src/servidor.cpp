@@ -50,9 +50,9 @@ void Servidor::add_participantes(int id)
 
 bool Servidor::equal_participantes(int id)
 {
-	for(auto& i : this->participantes_id)
-	{
-		if(i==id) return true;
+	for(auto& i : this->participantes_id) {
+		if (i == id)
+			return true;
 	}
 	return false;
 }
