@@ -8,27 +8,19 @@ Existe um executor que faz a interpretação dos comandos e executa o método co
 
 Com makefiles:
 ```console
-mkdir build
-make
+make install
 ```
-
-Com cmake:
-```console
-mkdir build
-cd build
-cmake ..
-cmake --build .
-```
-
-Escolha uma das duas formas de build e ignore a outra.
 
 ## Para executar
 Você pode rodar o sistema e em logo depois digitar os comandos seguidos de ENTER
+
 ```console
-./concordo
+make run
 ```
 
 Ou pode criar um arquivo de texto com uma lista de comandos (um por linha) e executar o sistema redirecionando esse arquivo como entrada padrão:
+
 ```console
-./concordo < script_comandos.txt
+make run F=[data]
 ```
+
