@@ -1,0 +1,22 @@
+create-user aaa bbb ccc
+create-user bbb sdds dada
+login aaa bbb
+list-servers 1
+create-server 1 server
+set-server-desc 1 server massa
+set-server-desc 1 serverdadaw massa
+disconnect 1
+login bbb sdds
+set-server-desc 2 server massaaaaa
+list-servers 2
+create-server 2 serverlouco
+list-servers 2
+disconnect 2
+login aaa bbb
+create-server 1 server2
+create-server 1 server3
+list-servers 1
+list-servers 2
+quit
+
+
