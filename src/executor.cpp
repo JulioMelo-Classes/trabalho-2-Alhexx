@@ -36,9 +36,8 @@ string Executor::processar_linha(string linha)
 	buf >> nomeComando;
 
 	if (nomeComando.empty()) {
-		return "Comando Inválido <vazio>";
+		return ">>>Comando inválido (vazio)...";
 	}
-
 	if (nomeComando == "quit" ) {
 		this->sair = true;
 		return sistema->quit();
@@ -48,35 +47,51 @@ string Executor::processar_linha(string linha)
 		buf >> email;
 		buf >> senha;
 		nome = resto_de(buf);
+		if (email.empty() || senha.empty() || nome.empty())
+			return ">>>Uso: create-user EMAIL SENHA NOME";
 		return sistema->create_user(email, senha, nome);
 	}
 	else if (nomeComando == "login") {
 		string email, senha;
 		buf >> email;
 		buf >> senha;
+		if (email.empty() || senha.empty())
+			return ">>>Uso: login EMAIL SENHA";
 		return sistema->login(email, senha);
+	}
+	else if (nomeComando == "list-users") {
+		return sistema->list_users();
 	}
 
 	int id;
-	if (buf >> id) {
+	if (!(buf >> id)) {
+		return ">>>Comando precisa ser precedido de um ID [" + nomeComando + "]...";
+	}
+
 	if (nomeComando == "disconnect") {
 		return sistema->disconnect(id);
 	}
 	else if (nomeComando == "create-server") {
 		string nome;
 		buf >> nome;
+		if (nome.empty())
+			return ">>>Uso: create-server ID NOME";
 		return sistema->create_server(id, nome);
 	}
 	else if (nomeComando == "set-server-desc") {
 		string nome, descricao;
 		buf >> nome;
 		descricao = resto_de(buf);
+		if (nome.empty())
+			return ">>>Uso: set-server-desc ID NOME [DESCRICAO...]";
 		return sistema->set_server_desc(id, nome, descricao);
 	}
 	else if (nomeComando == "set-server-invite-code") {
 		string nome, codigo;
 		buf >> nome;
 		buf >> codigo;
+		if (nome.empty())
+			return ">>>Uso: set-server-invite-code ID NOME [CODIGO]";
 		return sistema->set_server_invite_code(id, nome, codigo);
 	}
 	else if (nomeComando == "list-servers") {
@@ -85,17 +100,23 @@ string Executor::processar_linha(string linha)
 	else if (nomeComando == "remove-server") {
 		string nome;
 		buf >> nome;
+		if (nome.empty())
+			return ">>>Uso: remove-server ID NOME";
 		return sistema->remove_server(id, nome);
 	}
 	else if (nomeComando == "enter-server") {
 		string nome, codigo;
 		buf >> nome;
 		buf >> codigo;
+		if (nome.empty())
+			return ">>>Uso: remove-server ID NOME [CODIGO]";
 		return sistema->enter_server(id, nome, codigo);
 	}
 	else if (nomeComando == "leave-server") {
 		string nome;
 		buf >> nome;
+		if (nome.empty())
+			return ">>>Uso: leave-server ID NOME";
 		return sistema->leave_server(id, nome);
 	}
 	else if (nomeComando == "list-participants") {
@@ -107,11 +128,15 @@ string Executor::processar_linha(string linha)
 	else if (nomeComando == "create-channel") {
 		string nome;
 		buf >> nome;
+		if (nome.empty())
+			return ">>>Uso: create-channel ID NOME";
 		return sistema->create_channel(id, nome);
 	}
 	else if (nomeComando == "enter-channel") {
 		string nome;
 		buf >> nome;
+		if (nome.empty())
+			return ">>>Uso: enter-channel ID NOME";
 		return sistema->enter_channel(id, nome);
 	}
 	else if (nomeComando == "leave-channel") {
@@ -120,17 +145,15 @@ string Executor::processar_linha(string linha)
 	else if (nomeComando == "send-message") {
 		string mensagem;
 		mensagem = resto_de(buf);
+		if (mensagem.empty())
+			return ">>>Uso: send-message ID MESSAGE...";
 		return sistema->send_message(id, mensagem);
 	}
 	else if (nomeComando == "list-messages") {
 		return sistema->list_messages(id);
 	}
 	else {
-		return "Comando não reconhecido [" + nomeComando + "]";
-	}
-	}
-	else {
-		return "Comando precisa ser precedido de um id [" + nomeComando + "]";
+		return ">>>Comando não reconhecido [" + nomeComando + "]...";
 	}
 }
 

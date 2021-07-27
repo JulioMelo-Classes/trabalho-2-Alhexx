@@ -173,6 +173,9 @@ public:
 		@return uma string vazia em caso de sucesso ou uma mensagem de erro em caso de falha.
 	*/
 	string list_messages(int id);
+
+	/*** METODOS EXTRA ***/
+	string list_users();
 };
 
 #endif

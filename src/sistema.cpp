@@ -9,7 +9,7 @@
 using namespace std;
 
 template <typename StreamableT>
-string concat(StreamableT s)
+string cat(StreamableT s)
 {
 	stringstream ss;
 	ss << s;
@@ -17,11 +17,11 @@ string concat(StreamableT s)
 }
 
 template <typename StreamableHead, typename... StreamableTail>
-string concat(StreamableHead h, StreamableTail... t)
+string cat(StreamableHead h, StreamableTail... t)
 {
 	stringstream ss;
 	ss << h;
-	return ss.str() + concat(t...);
+	return ss.str() + cat(t...);
 }
 
 /* COMANDOS */
@@ -32,13 +32,6 @@ string Sistema::quit()
 
 string Sistema::create_user(const string email, const string senha, const string nome)
 {
-	if (email == "")
-        	return ">>>Voce esqueceu de botar um email, tente novamente...";
-	if (senha == "")
-        	return ">>>Voce esqueceu de botar uma senha, tente novamente...";
-	if (nome == "")
-        	return ">>>Voce esqueceu de botar um nome, tente novamente...";
-
 	for (auto& u : this->usuarios) {
 		if (email == u.get_email())
 			return ">>>Email já utilizado, brother...";
@@ -51,7 +44,7 @@ string Sistema::create_user(const string email, const string senha, const string
 	this->usuarios.push_back(usuario);
 
 	//return ">>>Usuario criado com sucesso, filhão. Seu id é: " + to_string(id);
-	return concat(">>>Usuario criado com sucesso, filhão. Seu id é: ", id);
+	return cat(">>>Usuario criado com sucesso, filhão. Seu ID é: ", id);
 }
 
 string Sistema::login(const string email, const string senha)
@@ -103,7 +96,7 @@ string Sistema::set_server_desc(int id, const string nome, const string descrica
 	for (auto& s : this->servidores) {
 		if (nome == s.get_nome()) {
 			if (id != s.get_usuario_dono_id())
-				return ">>>Id não é o dono do servidor...";
+				return ">>>Usuario não é o dono do servidor...";
 
 			s.set_descricao(descricao);
 			return ">>>Descrição do servidor criada!";
@@ -120,10 +113,10 @@ string Sistema::set_server_invite_code(int id, const string nome, const string c
 	for (auto& s : this->servidores) {
 		if (nome == s.get_nome()) {
 			if (id != s.get_usuario_dono_id())
-				return ">>>Id não é o dono do servidor...";
+				return ">>>Usuario não é o dono do servidor...";
 
 			s.set_codigo_convite(codigo);
-			return ">>>Descrição do servidor criada!";
+			return ">>>Codigo de convite do servidor criado!";
 		}
 	}
 	return ">>>Servidor inexistente...";
@@ -131,21 +124,19 @@ string Sistema::set_server_invite_code(int id, const string nome, const string c
 
 string Sistema::list_servers(int id)
 {
-	vector<string> servidores_nome;
 	if (!this->usuarios_logados.count(id))
 		return ">>>Usuario não está logado...";
 
-	for (auto& s : this->servidores)
-			servidores_nome.push_back(s.get_nome());
-
-	if (servidores_nome.size() == 0)
+	if (this->servidores.empty())
 		return ">>>Nenhum servidor foi criado ainda...";
 
-	int size = servidores_nome.size()-1;
-	for (int i = 0; i<size; i++) {
-		cout << "- " << servidores_nome[i] << endl;
+	stringstream ss;
+	for (auto& s : this->servidores) {
+		ss << "- " << s.get_nome() << " [\"" << s.get_descricao() << "\"] ";
+		ss << "[DONO: #" << s.get_usuario_dono_id() << "]" << endl;
 	}
-	return "- " + servidores_nome[size];
+
+	return ss.str() + ">>>Fim!";
 }
 
 string Sistema::remove_server(int id, const string nome)
@@ -155,21 +146,21 @@ string Sistema::remove_server(int id, const string nome)
 
 	for (auto& u : usuarios) {
 		if (this->usuarios_logados[u.get_id()].first == nome)
-			this->usuarios_logados[u.get_id()].first == "";
+			this->usuarios_logados[u.get_id()].first = "";
 	}
 
 	auto i = servidores.begin();
 	while (i != servidores.end()) {
 		if (i->get_nome() == nome) {
 			if (i->get_usuario_dono_id() != id)
-				return "Usuario nao e dono do servidor...";
+				return ">>>Usuario nao e dono do servidor...";
 
 			servidores.erase(i);
-			return "Servidor removido com sucesso!";
+			return ">>>Servidor removido com sucesso!";
 		}
 		++i;
 	}
-	return "Servidor nao existe...";
+	return ">>>Servidor nao existe...";
 }
 
 string Sistema::enter_server(int id, const string nome, const string codigo)
@@ -245,3 +236,28 @@ string Sistema::list_messages(int id)
 }
 
 /* IMPLEMENTAR MÉTODOS PARA OS COMANDOS RESTANTES */
+
+string Sistema::list_users()
+{
+	if (this->usuarios.empty())
+		return ">>>Nenhum usuario foi criado ainda...";
+
+	stringstream ss;
+	for (auto& u : this->usuarios) {
+		ss << "#" << u.get_id() << " " << u.get_nome() << " [";
+
+		if (this->usuarios_logados.count(u.get_id()))
+			ss << this->usuarios_logados[u.get_id()].first;
+		ss << " / ";
+
+		if (this->usuarios_logados.count(u.get_id()))
+			ss << this->usuarios_logados[u.get_id()].second;
+		ss << "] ";
+
+		if (this->usuarios_logados.count(u.get_id()))
+			ss << "[STATUS: on]" << endl;
+		else
+			ss << "[STATUS: off]" << endl;
+	}
+	return ss.str() + ">>>Fim!";
+}

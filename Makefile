@@ -12,34 +12,26 @@ SRC = $(wildcard $(SRC_DIR)/*.cpp)
 OBJ = $(SRC:$(SRC_DIR)/%.cpp=$(BIN_DIR)/%.o)
 EXE = $(BIN_DIR)/concordo
 
-install: setup clean $(EXE)
+install: setup $(EXE)
+
+clean: setup
+	echo -n ===CLEANING UP ' '
+	rm -f $(BIN_DIR)/*.o $(EXE)
+	echo OK
 
 setup:
 	echo -n ===SETTING UP ' '
 	mkdir -p $(SRC_DIR) $(BIN_DIR) $(INCLUDE_DIR) $(DATA_DIR)
 	echo OK
 
-clean:
-	echo -n ===CLEANING $(BIN_DIR)/ ' '
-	rm -f $(BIN_DIR)/*.o $(EXE)
-	echo OK
-
 $(EXE): $(OBJ)
-	echo -n ===LINKING ' '
+	echo -n ===LINKING $(EXE) ' '
 	$(CXX) $^ -I $(INCLUDE_DIR) -o $@ $(LFLAGS)
 	echo OK
 
 $(OBJ): $(BIN_DIR)/%.o: $(SRC_DIR)/%.cpp
 	echo -n ===COMPILING $< ' '
 	$(CXX) -c $< -I $(INCLUDE_DIR) -o $@ $(CFLAGS)
-	echo OK
-
-single:
-	echo -n ===COMPILING $(F) ' '
-	$(CXX) -c $(F) -I $(INCLUDE_DIR) -o $(F:$(SRC_DIR)/%.cpp=$(BIN_DIR)/%.o) $(CFLAGS)
-	echo OK
-	echo -n ===LINKING ' '
-	$(CXX) $(OBJ) -I $(INCLUDE_DIR) -o $(EXE) $(LFLAGS)
 	echo OK
 
 run:
@@ -53,9 +45,9 @@ test:
 	for file in $(DATA_DIR)/* ; do echo ===TESTING $${file} ; ./$(EXE) < $${file} ; done
 
 debug:
-	echo $(SRC)
-	echo $(OBJ)
-	echo $(EXE)
+	echo SRC: $(SRC)
+	echo OBJ: $(OBJ)
+	echo EXE: $(EXE)
 
-.PHONY: install setup clean $(EXE) $(OBJ) single run test debug
+.PHONY: install setup clean single run test debug
 .SILENT: install setup clean $(EXE) $(OBJ) single run test debug
