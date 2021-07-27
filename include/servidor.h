@@ -7,6 +7,9 @@
 
 using namespace std;
 
+/*
+Classe servidor ok
+*/
 class Servidor {
 private:
 	int usuario_dono_id;
@@ -30,7 +33,10 @@ public:
 
 	void add_participantes(int id);
 	bool equal_participantes(int id);
+
 	void print_canais_texto(ostream& out_stream);
+	
+	/*neste caso o melhor era receber o vetor de participantes também como referencia*/
 	void print_participantes_id(ostream& out_stream);
 };
 

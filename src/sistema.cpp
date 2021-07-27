@@ -29,7 +29,9 @@ string Sistema::quit()
 {
 	return ">>>Adios...";
 }
-
+/*
+A1.2 ok
+*/
 string Sistema::create_user(const string email, const string senha, const string nome)
 {
 	if (email == "")
@@ -54,6 +56,9 @@ string Sistema::create_user(const string email, const string senha, const string
 	return concat(">>>Usuario criado com sucesso, filhão. Seu id é: ", id);
 }
 
+/*
+A1.3 ok
+*/
 string Sistema::login(const string email, const string senha)
 {
 	for (auto& u : this->usuarios) {
@@ -71,6 +76,9 @@ string Sistema::login(const string email, const string senha)
 	return ">>>Email nao cadastrado, consagrado...";
 }
 
+/*
+A2.1 ok
+*/
 string Sistema::disconnect(int id)
 {
 	if (!this->usuarios_logados.count(id))
@@ -80,6 +88,9 @@ string Sistema::disconnect(int id)
 	return ">>>Desconectado com sucesso!";
 }
 
+/*
+A2.2 ok
+*/
 string Sistema::create_server(int id, const string nome)
 {
 	if (!this->usuarios_logados.count(id))
@@ -95,6 +106,9 @@ string Sistema::create_server(int id, const string nome)
 	return ">>>Servidor criado com sucesso!";
 }
 
+/*
+A2.3 ok
+*/
 string Sistema::set_server_desc(int id, const string nome, const string descricao)
 {
 	if (!this->usuarios_logados.count(id))
@@ -112,6 +126,10 @@ string Sistema::set_server_desc(int id, const string nome, const string descrica
 	return ">>>Servidor inexistente...";
 }
 
+/*
+A2.4 ok
+Neste caso lembre que existe o comportamento em que a senha é removida do servidor
+*/
 string Sistema::set_server_invite_code(int id, const string nome, const string codigo)
 {
 	if (!this->usuarios_logados.count(id))
@@ -129,6 +147,9 @@ string Sistema::set_server_invite_code(int id, const string nome, const string c
 	return ">>>Servidor inexistente...";
 }
 
+/*
+A2.5 ok
+*/
 string Sistema::list_servers(int id)
 {
 	vector<string> servidores_nome;
@@ -148,6 +169,11 @@ string Sistema::list_servers(int id)
 	return "- " + servidores_nome[size];
 }
 
+/*
+A2.6 ok
+Neste caso lembrem de verificar se o usuário pode remover o servidor
+antes de dropar todos usuarios conectados nele
+*/
 string Sistema::remove_server(int id, const string nome)
 {
 	if (!this->usuarios_logados.count(id))

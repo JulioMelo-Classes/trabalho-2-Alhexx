@@ -4,6 +4,9 @@
 
 using std::string;
 
+/*
+Classe usuário ok
+*/
 class Usuario {
 private:
 	int id;
