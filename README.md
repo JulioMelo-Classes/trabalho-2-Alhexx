@@ -1,34 +1,45 @@
-# Base para a atividade 02 de LP1
+# LP1 Trabalho 2 - Concordo
 
-Use esse esqueleto de classes para iniciar a terceira atividade.
+Repositório do Concordo implementado em c++ para a disciplina de Linguagem de Programação 1.
 
-Existe um executor que faz a interpretação dos comandos e executa o método correto do sistema.
+Comentários das funções podem ser encontrados nos seus respectivos [headers](./include).
 
-## Para compilar
+Informações dos autores podem ser encontrados em [autor.md](./autor.md).
 
-Com makefiles:
-```console
-mkdir build
-make
+## Compilando a aplicação
+
+Clone este repositório em sua máquina, tenha `make` instalado no sistema e faça:
+```
+$ make clean install
 ```
 
-Com cmake:
-```console
-mkdir build
-cd build
-cmake ..
-cmake --build .
+## Executando a aplicação
+
+Faça:
+```
+$ make run
+```
+Ou:
+```
+$ ./bin/concordo
 ```
 
-Escolha uma das duas formas de build e ignore a outra.
+## Executando testes
 
-## Para executar
-Você pode rodar o sistema e em logo depois digitar os comandos seguidos de ENTER
-```console
-./concordo
+Faça:
 ```
+$ make run F=[FILE_PATH]
+```
+Ou:
+```
+$ ./bin/concordo < [FILE_PATH]
+```
+Onde [FILE_PATH] é o caminho do arquivo de testes (sem colchetes).
 
-Ou pode criar um arquivo de texto com uma lista de comandos (um por linha) e executar o sistema redirecionando esse arquivo como entrada padrão:
-```console
-./concordo < script_comandos.txt
-```
+Arquivos exemplos de teste podem ser encontrados no diretório [data](./data).
+
+## Limitações e funcionalidades não implementadas
+
+Tanto o [executor.cpp](./src/executor.cpp) quanto o [sistema.h](./include/sistema.h) foram modificados e diferem dos originais do trabalho. Sem essas versões modificadas, seria possível passar strings vazias para as funções do sistema, e [Sistema::list_users()](./src/sistema.cpp) causaria erro na compilação.
+
+O atributo [Mensagem::data_hora](./src/mensagem.cpp) so irá gerar o ano correto neste século (XXI).

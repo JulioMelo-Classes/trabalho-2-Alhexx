@@ -1,8 +1,10 @@
 #include <string>
 #include <ostream>
 #include <vector>
+#include <sstream>
 #include "canaltexto.h"
 #include "mensagem.h"
+#include "usuario.h"
 
 using namespace std;
 
@@ -16,16 +18,25 @@ string CanalTexto::get_nome()
 	return this->nome;
 }
 
-/*
-void CanalTexto::add_mensagem(string mensagem)
+void CanalTexto::add_mensagem(Mensagem mensagem)
 {
-	Mensagem("", id)
-	this->mensagens.push_back(mensagem)
+	this->mensagens.push_back(mensagem);
 }
-*/
 
-void CanalTexto::print_mensagens(ostream &out_stream)
+string CanalTexto::listar_mensagens(vector<Usuario>& usuarios)
 {
-	for (auto& m : this->mensagens)
-		out_stream << m.get_conteudo() << endl;
+	stringstream ss;
+	for (auto& m : this->mensagens) {
+		for (auto& u : usuarios) {
+			if (m.get_enviada_por() == u.get_id()) {
+				ss << u.get_nome() << " " << m.get_data_hora();
+				ss  << ": " << m.get_conteudo() << endl;
+				break;
+			}
+		}
+	}
+
+	if (ss.str().empty())
+		return ">>>Este canal de texto ainda não tem mensagens...";
+	return ss.str() + ">>>Fim!";
 }

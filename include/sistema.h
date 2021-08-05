@@ -2,7 +2,6 @@
 #define SISTEMA_H
 #include <vector>
 #include <string>
-#include <iostream>
 #include <map>
 #include "usuario.h"
 #include "servidor.h"
@@ -19,7 +18,7 @@ private:
 
 public:
 	/*! Encerra o funcionamento do Concordo, o programa termina ao executar este comando.
-		@return uma string com a mensagem "Saindo.."
+		@return uma string com a mensagem "Adios..."
 	*/
 	string quit();
 
@@ -27,7 +26,8 @@ public:
 		@param email o email do usuário informado no comando create-user
 		@param senha a senha passada ao comando create-ser
 		@param nome o nome do usuário (com espaços) passado ao comando create user
-		@return uma string contendo uma mensagem de erro ou "Usuário Criado"
+		@return uma string contendo uma mensagem de erro ou "Usuário criado com,
+		sucesso, filhao. Seu ID e: <id>".
 	*/
 	string create_user(const string email, const string senha, const string nome);
 
@@ -36,7 +36,7 @@ public:
 		Sistema::usuariosLogados.
 		@param email o email do usuário, passado no comando login
 		@param senha a senha correspondente àquele usuário
-		@return uma string contendo uma mensagem de erro ou "Logado como <email>!"
+		@return uma string contendo uma mensagem de erro ou "Conectado com sucesso!"
 	*/
 	string login(const string email, const string senha);
 
@@ -44,7 +44,7 @@ public:
 		tabela Sistema::usuariosLogados. A função retorna uma mensagem de sucesso ou de erro
 		caso o usuário não esteja logado.
 		@param id um id válido de um usuário logado no sistema.
-		@return "Usuário <email> desconectado!" ou uma mensagem de erro em caso de falha.
+		@return "Desconectado com sucesso!" ou uma mensagem de erro em caso de falha.
 	*/
 	string disconnect(int id);
 
@@ -53,8 +53,8 @@ public:
 		criado por algum motivo.
 		@param id um id válido de um usuário logado no sistema.
 		@param nome o nome do servidor de acordo com o comando create-server.
-		@return "Servidor <nome> criado" quando o servidor for criado ou uma mensagem de erro em
-		caso de falha.
+		@return "Servidor criado com sucesso!" quando o servidor for criado ou uma mensagem de
+		erro em caso de falha.
 	*/
 	string create_server(int id, const string nome);
 
@@ -64,7 +64,7 @@ public:
 		@param id um id válido de um usuário logado no sistema.
 		@param nome o nome do servidor que se deseja mudar.
 		@param descricao nova descrição desejada.
-		@return "Descrição do servidor <nome> modificada!" ou uma mensagem de erro em caso de falha.
+		@return "Descrição do servidor <nome> criada!" ou uma mensagem de erro em caso de falha.
 	*/
 	string set_server_desc(int id, const string nome, const string descricao);
 
@@ -73,7 +73,8 @@ public:
 		@param id um id válido de um usuário logado no sistema.
 		@param nome um nome válido de um servidor cadastrado no sistema.
 		@param codigo um código de acordo com o comando set-server-invite-code.
-		@return "Código de convite modificado com sucesso" ou uma mensagem de erro em caso de
+		@return "Código de convite do servidor <nome> criado!", "Código de convite do servidor
+		<nome> removido! Servidor aberto!" ou uma mensagem de erro em caso de
 		falha.
 	*/
 	string set_server_invite_code(int id, const string nome, const string codigo);
@@ -81,7 +82,7 @@ public:
 	/*! Lista os servidores cadastrados no sistema, retorna uma string contendo uma mensagem de
 		erro ou uma string vazia no caso de não haver erros.
 		@param id um id válido de algum usuário cadastrado e logado no sistema.
-		@return uma string vazia ou a string de erro "Usuário não está logado".
+		@return a lista dos servidores ou uma mensagem de erro.
 	*/
 	string list_servers(int id);
 
@@ -89,7 +90,7 @@ public:
 		em caso de falha.
 		@param id  um id válido de algum usuário cadastrado e logado no sistema.
 		@param nome um nome válido de um servidor cadastrado no sistema.
-		@return "Servidor <nome> removido com sucesso" ou uma mensagem de erro em caso de falha.
+		@return "Servidor removido com sucesso!" ou uma mensagem de erro em caso de falha.
 	*/
 	string remove_server(int id, const string nome);
 
@@ -100,8 +101,9 @@ public:
 		@param id  um id válido de algum usuário cadastrado e logado no sistema.
 		@param nome um nome válido de um servidor cadastrado no sistema.
 		@param codigo um código de convite para o servidor se necessário ou uma string vazia, caso
-		 o comando tenha vindo sem código. Veja o comando enter-server para mais detalhes.
-		@return "Entrou no servidor <nome>" em caso de sucesso ou uma mensagem de erro caso contrário.
+		o comando tenha vindo sem código. Veja o comando enter-server para mais detalhes.
+		@return "Usuario entrou no servidor com sucesso!" em caso de sucesso ou uma mensagem
+		de erro caso contrário.
 	*/
 	string enter_server(int id, const string nome, const string codigo);
 
@@ -113,21 +115,22 @@ public:
 		visualizando aquele servidor.
 		@param id um id válido de algum usuário cadastrado e logado no sistema.
 		@param nome um nome válido de um servidor cadastrado no sistema.
-		@return "Saiu do servidor <nome>" ou uma mensagem de erro em caso de falha.
+		@return "Usuario saiu do servidor com sucesso!" ou uma mensagem de erro em caso de falha.
 	*/
 	string leave_server(int id, const string nome);
 
 	/*! Lista os participantes presentes no servidor que o usuário com o id passado está visualizando.
 		Retorna uma string vazia em caso de sucesso ou uma mensagem de erro em caso de falha.
 		@param id um id válido de algum usuário cadastrado e logado no sistema.
-		@return Uma string vazia em caso de sucesso ou uma mensagem de erro em caso de falha.
+		@return a lista de participantes em caso de sucesso ou uma mensagem de erro em caso de
+		falha.
 	*/
 	string list_participants(int id);
 
 	/*! Lista os canais do servidor que o usuário com o id passado está vizualizando. Retorna uma
 		string vazia em caso de sucesso o uma mensagem de erro no caso de falha.
 		@param id um id válido de algum usuário cadastrado e logado no sistema.
-		@return uma string vazia em caso de sucesso ou uma mensagem de erro em caso de falha.
+		@return a lista de canais em caso de sucesso ou uma mensagem de erro em caso de falha.
 	*/
 	string list_channels(int id);
 
@@ -135,18 +138,17 @@ public:
 		de acordo com o comando create-channel. Retorna uma mensa
 		@param id um id válido de algum usuário cadastrado e logado no sistema.
 		@param o nome do novo canal, de acordo com o comando create-channel
-		@return "Canal <nome> criado!" ou uma mensagem de erro em caso de falha.
+		@return "Canal criado com sucesso!" ou uma mensagem de erro em caso de falha.
 	*/
 	string create_channel(int id, const string nome);
 
 	/*! Faz com que o usuário com id dado entre em um canal específico(com seu nome e tipo) ao entrar
 		em um canal o sistema deve atualizar a tabela Sistema::usuariosLogados com a informação de
-		que o usuário está vizualizando o canal em que entrou. Retorna uma mensagem de sucesso ou de
-		erro em caso de falha.
+		que o usuário está vizualizando o canal em que entrou. Retorna uma mensagem de sucesso ou
+		de erro em caso de falha.
 		@param id um id válido de algum usuário cadastrado e logado no sistema.
 		@param o nome do canal que deseja entrar,
-		@return "Usuário <email.do.usuario> entrou no canal <nome>" ou uma mensagem de
-		erro em caso de falha.
+		@return "Usuário entrou no canal <nome>!" ou uma mensagem de erro em caso de falha.
 	*/
 	string enter_channel(int id, const string nome);
 
@@ -156,25 +158,29 @@ public:
 		mensagem de sucesso ou de erro em caso de falha
 		@param id um id válido de algum usuário cadastrado e logado no sistema.
 		que o usuário está visualizando, de acordo com o atributo Sistema::usuariosLogados.
-		@return "Usuário <email.do.usuario> saiu no canal <nome>" ou uma mensagem de erro em caso de
-		falha.
+		@return "Usuário saiu no canal <nome>!" ou uma mensagem de erro em caso de falha.
 	*/
 	string leave_channel(int id);
 
 	/*! Envia uma mensagem no canal em que o usuáiro com id passado está visualizando.
 		@param id um id válido de algum usuário cadastrado e logado no sistema.
 		@param mensagem a mensagem que deve ser enviada.
-		@return uma string vazia em caso de sucesso ou uma mensagem de erro em caso de falha.
+		@return "Mensagem enviada com sucesso" em caso de sucesso ou uma mensagem de erro
+		em caso de falha.
 	*/
 	string send_message(int id, const string mensagem);
 
 	/*! Lista as mensagem no canal que o usuário com id passado está visualizando.
 		@param id um id válido de algum usuário cadastrado e logado no sistema.
-		@return uma string vazia em caso de sucesso ou uma mensagem de erro em caso de falha.
+		@return a lista de mensagens em caso de sucesso ou uma mensagem de erro em caso de falha.
 	*/
 	string list_messages(int id);
 
 	/*** METODOS EXTRA ***/
+
+	/*! List users that are cadastred in the system and show their status(on/off).
+		@return a formated string that show the users and their status or a error message.
+	*/
 	string list_users();
 };
 

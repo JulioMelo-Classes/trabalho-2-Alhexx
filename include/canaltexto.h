@@ -2,11 +2,9 @@
 #define CANALTEXTO_H
 #include <string>
 #include <vector>
-#include <ostream>
 #include "mensagem.h"
+#include "usuario.h"
 
-using std::string;
-using std::vector;
 using namespace std;
 
 class CanalTexto {
@@ -15,12 +13,26 @@ private:
 	vector<Mensagem> mensagens;
 
 public:
-	CanalTexto(string n);
+	/* @brief Constructor. Also mensagens starts empty.
+	 * @param nome Channel's name.
+	 */
+	CanalTexto(string nome);
 
+	/* @brief Getters for attributes.
+	 * @return Value of corresponding attribute.
+	 */
 	string get_nome();
 
-	void add_mensagem();
-	void print_mensagens(ostream &out_stream);
+	/* @brief Adds a Mensagem object to mensagens.
+	 * @param mensagem Mensagem object to be added.
+	 */
+	void add_mensagem(Mensagem mensagem);
+
+	/* @brief Builds a string listing all messages in mensagens.
+	 * @param usuarios List of all available users.
+	 * @return Formated list of messages.
+	 */
+	string listar_mensagens(vector<Usuario>& usuarios);
 };
 
 #endif

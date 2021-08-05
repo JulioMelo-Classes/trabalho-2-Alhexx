@@ -109,7 +109,7 @@ string Executor::processar_linha(string linha)
 		buf >> nome;
 		buf >> codigo;
 		if (nome.empty())
-			return ">>>Uso: remove-server ID NOME [CODIGO]";
+			return ">>>Uso: enter-server ID NOME [CODIGO]";
 		return sistema->enter_server(id, nome, codigo);
 	}
 	else if (nomeComando == "leave-server") {
