@@ -4,14 +4,21 @@
 
 using namespace std;
 
+/*
+CP2 ok
+
+Documentação: vou considerar 80% da documentação, uma vez que faltou documentar os atributos
+*/
 class Mensagem {
 private:
-	string data_hora;
+	string data_hora; //<! faltou documentação dos atributos
 	int enviada_por;
 	string conteudo;
 
 public:
-	/* @brief Constructor. Also data_hora is auto-generated.
+	/*o formato doxygen usa dois * no começo do cabeçalho, talvez o editor de vcs não tenha marcado*/
+	/**
+	 * @brief Constructor. Also data_hora is auto-generated.
 	 * @param enviada_por Sender's ID.
 	 * @param conteudo Message's content.
 	 */

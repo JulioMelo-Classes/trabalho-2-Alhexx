@@ -7,7 +7,11 @@
 #include "mensagem.h"
 
 using namespace std;
+/*
+CP2 ok
 
+Documentação: vou considerar 80% da documentação, uma vez que faltou documentar os atributos
+*/
 class Servidor {
 private:
 	int usuario_dono_id;

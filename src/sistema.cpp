@@ -180,6 +180,10 @@ string Sistema::remove_server(int id, const string nome)
 	return ">>>Servidor nao existe...";
 }
 
+/*
+CP2
+A2.7 ok
+*/
 string Sistema::enter_server(int id, const string nome, const string codigo)
 {
 	if (!this->usuarios_logados.count(id))
@@ -206,6 +210,11 @@ string Sistema::enter_server(int id, const string nome, const string codigo)
 	return ">>>Servidor inexistente...";
 }
 
+/*
+CP2
+A2.8 ok, embora voces tenham escolhido que um usuário não pode sair do servidor se ele for o dono. Veja que isso não está na especificação, 
+     e esse comportamento invalida a função do enter-server <id_dono> sem senha.
+*/
 string Sistema::leave_server(int id, const string nome)
 {
 	if (!this->usuarios_logados.count(id))
@@ -230,6 +239,10 @@ string Sistema::leave_server(int id, const string nome)
 	return ">>>Servidor inexistente...";
 }
 
+/*
+CP2
+A2.9 ok
+*/
 string Sistema::list_participants(int id)
 {
 	if (!this->usuarios_logados.count(id))
@@ -245,6 +258,9 @@ string Sistema::list_participants(int id)
 	return ">>>Servidor nao encontrado...";
 }
 
+/*
+B1.1 ok
+*/
 string Sistema::list_channels(int id)
 {
 	if (!this->usuarios_logados.count(id))
@@ -260,6 +276,9 @@ string Sistema::list_channels(int id)
 	return ">>>Servidor nao encontrado...";
 }
 
+/*
+B1.2 ok
+*/
 string Sistema::create_channel(int id, const string nome)
 {
 	if (!this->usuarios_logados.count(id))
@@ -281,6 +300,9 @@ string Sistema::create_channel(int id, const string nome)
 	return ">>>Usuario nao é dono do servidor...";
 }
 
+/*
+B1.3 ok
+*/
 string Sistema::enter_channel(int id, const string nome)
 {
 	if (!this->usuarios_logados.count(id))
@@ -303,6 +325,9 @@ string Sistema::enter_channel(int id, const string nome)
 	return ">>>Canal de texto não encontrado...";
 }
 
+/*
+B1.4 ok
+*/
 string Sistema::leave_channel(int id)
 {
 	if (!this->usuarios_logados.count(id))
@@ -320,6 +345,9 @@ string Sistema::leave_channel(int id)
 	return cat(">>>Usuario saiu do canal ", c, "!");
 }
 
+/*
+B2.1 ok
+*/
 string Sistema::send_message(int id, const string conteudo)
 {
 	if (!this->usuarios_logados.count(id))
@@ -341,6 +369,9 @@ string Sistema::send_message(int id, const string conteudo)
 	return ">>>Servidor nao encontrado...";
 }
 
+/*
+B2.2 ok
+*/
 string Sistema::list_messages(int id)
 {
 	if (!this->usuarios_logados.count(id))

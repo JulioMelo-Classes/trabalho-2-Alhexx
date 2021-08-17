@@ -7,6 +7,11 @@
 
 using namespace std;
 
+/*
+CP2 ok
+
+Documentação: vou considerar 80% da documentação, uma vez que faltou documentar os atributos
+*/
 class CanalTexto {
 private:
 	string nome;

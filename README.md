@@ -25,7 +25,7 @@ $ ./bin/concordo
 ```
 
 ## Executando testes
-
+<!--Testes: vou considerar 0.5 uma vez que não há documentação sobre os testes-->
 Faça:
 ```
 $ make run F=[FILE_PATH]
